@@ -1,0 +1,7 @@
+---
+-
+ appPackage: com.ABCD.nt
+ appActivity: com.ABCD.nt.module.appstart.SplashActivity
+ unicodeKeyboard: True
+ resetKeyboard: True
+ noReset: False

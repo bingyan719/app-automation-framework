@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html class='no-js' ng-app ng-controller="DataCtrl" lang='en'>
+  <head>
+    <script src="./js/jquery.min.js" type="text/javascript"></script>
+    <script src="./js/angular.min.js"></script>
+    <meta charset='utf-8'>
+    <meta content='IE=edge,chrome=1' http-equiv='X-UA-Compatible'>
+    <title> Dashboard</title>
+    <meta content='IcyLI' name='author'>
+    <meta content='' name='description'>
+    <meta content='' name='keywords'>
+  <!--   <link rel="stylesheet" href="./css/bootstrap.css"> -->
+    <link href="./css/application-a07755f5.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="./font-awesome/css/font-awesome.min.css">
+    <link href="./images/favicon.ico" rel="icon" type="image/ico" />
+    <style type="text/css">
+    .padding-none{
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .form-group{
+      margin-bottom: 0px;
+    }
+    </style>
+  </head>
+  <body class='main page'>
+    <!-- Navbar -->
+    <div class='navbar navbar-default' id='navbar'>
+      <a class='navbar-brand' href='./dashboard.html'>
+        <i class='icon-beer'></i>
+        Automation Test Report
+      </a>
+    </div>
+    <div id='wrapper'>
+      <!-- Sidebar -->
+      <section id='sidebar'>
+        <i class='icon-align-justify icon-large' id='toggle'></i>
+        <ul id='dock'>
+          <li class='active launcher'>
+            <i class='icon-dashboard'></i>
+            <a href="dashboard.html">Dashboard</a>
+          </li>
+        </ul>
+        <div data-toggle='tooltip' id='beaker' title='Made by xxx'></div>
+      </section>
+      <!-- Tools -->
+      <section id='tools'>
+        <ul class='breadcrumb' id='breadcrumb'>
+          <li class='title'>Dashboard</li>
+          <li class='active'><a href="./dashboard.html">Index</a></li>
+        </ul>
+      </section>
+      <!-- Content -->
+      <div id='content'>
+        <div class="row">
+          <div class='panel panel-default col-md-offset-1  col-md-10 padding-none'>
+            <div class='panel-heading'>
+              <i class='icon-info icon-large'></i>
+              测试结果
+            </div>
+            <div class='panel-body'>
+              <legend>概况</legend>
+              <div id="message" class="col-md-6">
+                <form>
+                  <fieldset>
+                    <div class='form-group'>
+                      <label class='control-label'>Start Time：</label>
+                      {{testSuits._startTime}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>End Time：</label>
+                      {{testSuits._endTime}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>All：</label>
+                      {{testSuits._total}}
+                    </div>                 
+                    <div class='form-group'>
+                      <label class='control-label'>Pass：</label>
+                      {{testSuits._success}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>Fail：</label>
+                      {{testSuits._fail}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>PassRate：</label>
+                      {{testSuits.passrate}}
+                    </div>
+
+                    <div class='form-group'>
+                      <label class='control-label'>Package Name：</label>
+                      {{testSuits._package_name}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>Device Name：</label>
+                      {{testSuits._device_name}}
+                    </div>
+                    <div class='form-group'>
+                      <label class='control-label'>Package Name Version：</label>
+                      {{testSuits._package_name_version}}
+                    </div>
+                  </fieldset>
+        
+                </form>
+              </div>
+              <div class="col-md-6" ng-controller="ChartCtrl" >
+                <canvas id="chart-area" width="300" height="300" style="width: 300px; height: 300px;"></canvas>
+              </div>
+            </div>
+          </div>
+          <div ng-if="testSuits.deviceInfo" class="panel panel-default {{testSuits.appInfo?'col-md-4':'col-md-5'}}   padding-none">
+            <div class='panel-heading'>
+              <i class='icon-mobile-phone icon-large'></i>
+              设备信息
+            </div>
+            <div class='panel-body'>
+              <form>
+                <fieldset>
+                  <legend>{{testSuits.deviceInfo.name}}</legend>
+                  <div class='form-group'>
+                    <label class='control-label'>操作系统:</label>
+                    {{testSuits.deviceInfo.osName}}
+                  </div>
+                  <div class='form-group'>
+                    <label class='control-label'>内核版本:</label>
+                    {{testSuits.deviceInfo.kernel}}
+                  </div>
+                  <div class='form-group'>
+                    <label class='control-label'>电量：</label>
+                    {{testSuits.deviceInfo.battery}}%
+                  </div>   
+                  <div class='form-group'>
+                    <label class='control-label'>DPI：</label>
+                    {{testSuits.deviceInfo.density}}
+                  </div>                            
+                </fieldset>
+      
+              </form>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class='panel panel-default  col-md-offset-1  col-md-10 padding-none'>
+              <div class='panel-heading'>
+                <i class='icon-info-sign icon-large'></i>
+                各用例集测试结果
+              </div>
+              <div class='panel-body'>
+                <table class='table' >
+                  <thead>
+                    <tr>
+                      <th>Suite Name</th>
+                      <th>Total Case</th>
+                      <th>Pass</th>
+                      <th>Fail</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>Pass Rate</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                     <tr ng-repeat="suit in testSuits._suites">
+                      <td><a href='testcase.html?id={{suit.id}}'><i class='icon-folder-open'></i>{{suit.suiteName}}</a></td>
+                      <td>{{suit._total}}</td>
+                      <td>{{suit._success}}</td>
+                      <td>{{suit._fail}}</td>
+                      <td>{{suit._startTime}}</td>
+                      <td>{{suit._endTime}}</td>
+                      <td>{{suit.passrate}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   
+    <script src="./js/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="./js/modernizr.min.js" type="text/javascript"></script>
+    <script src="./js/md5.min.js" type="text/javascript"></script>
+    <script src="./js/chartnew.js"></script>
+    
+    <script src="./js/application-985b892b.js" type="text/javascript"></script>
+    <script src="./report/data.js" type="text/javascript"></script>
+    <script src="./js/init.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        function ChartCtrl($scope)
+        {
+          var pieData = [
+              {
+                value: $scope.testSuits._fail,
+                color:"#d9534f",
+                title: "Fail",
+              },
+              {
+                value: $scope.testSuits._success,
+                color: "#5cb85c",
+                title: "Pass",
+              }
+            ];
+            var elem=document.getElementById("message");
+            var width=elem.offsetWidth;  
+            var height=elem.offsetHeight; 
+            var size= width<height?width:height;
+            var canvas=document.getElementById("chart-area");
+            canvas.width=size;  
+            canvas.height=size; 
+
+            var opt1 = {
+            legend : true,
+            legendBorders:false,
+            inGraphDataShow : false,
+            annotateDisplay : true,
+            graphTitleFontSize: 0,
+            spaceTop : 0,
+            spaceRight : 0,
+            }
+ 
+            var ctx = document.getElementById("chart-area").getContext("2d");
+            var myPie = new Chart(ctx);
+            myPie.Pie(pieData,opt1,myPie);
+        }
+    </script>  
+  </body>
+</html>

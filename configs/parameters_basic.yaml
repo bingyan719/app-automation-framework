@@ -1,0 +1,7 @@
+---
+-
+ appPackage: com.ABCD.smt.template
+ appActivity: com.ABCD.smt.ui.activity.SplashActivity
+ unicodeKeyboard: True
+ resetKeyboard: True
+ noReset: False
